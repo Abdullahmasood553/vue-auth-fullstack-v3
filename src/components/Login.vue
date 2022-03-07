@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6">
-                <form>
+                <form >
                     <fieldset>
                         <div class="form-group">
                             <label class="form-label mt-4">Enter Email</label>
@@ -25,6 +25,7 @@
 
 <script>
     import axios from 'axios'
+    import router from '../routes'
     export default {
         name: 'Login',
         data() {
@@ -39,11 +40,14 @@
                 alert('Clicked');
                 axios.post('http://127.0.0.1:8000/api/login').then(response => {
                       if (response.status == 200) { 
-                          alert('Success');
-                      }
-                }).catch(error => {
-                    console.log(error);
-                });
+                        localStorage.setItem('usertoken', response.data.token)
+                        this.email = ''
+                        this.password = ''
+                        router.push({name: 'Home'})
+                            }
+                        }).catch(error => {
+                            console.log(error);
+                        });
             }
         }
     }
