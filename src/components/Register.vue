@@ -6,23 +6,23 @@
                     <fieldset>
                         <div class="form-group">
                             <label class="form-label mt-4">Enter Name</label>
-                            <input type="text" class="form-control" v-model="contact.name" placeholder="Enter name">
+                            <input type="text" class="form-control" v-model="user.name" placeholder="Enter name">
                         </div>
 
                         <div class="form-group">
                             <label class="form-label mt-4">Enter Email</label>
-                            <input type="email" class="form-control" v-model="contact.email" placeholder="Enter email">
+                            <input type="email" class="form-control" v-model="user.email" placeholder="Enter email">
                         </div>
 
                         <div class="form-group">
                             <label class="form-label mt-4">Enter Password</label>
-                            <input type="password" v-model="contact.password" class="form-control"
+                            <input type="password" v-model="user.password" class="form-control"
                                 placeholder="Enter Password">
                         </div>
 
                         <div class="form-group">
                             <label class="form-label mt-4">Enter Password</label>
-                            <input type="password" v-model="contact.password_confirmation" class="form-control"
+                            <input type="password" v-model="user.password_confirmation" class="form-control"
                                 placeholder="Enter Confirm Password">
                         </div>
 
@@ -42,7 +42,7 @@ import axios from 'axios'
         name: 'Register',
         data() {
             return {
-                contact: {},
+                user: {},
                 name: '',
                 email: '',
                 password: '',
@@ -55,18 +55,18 @@ import axios from 'axios'
         methods: {
             async saveContact() {
                     let formData = new FormData();
-                    formData.append('name', this.contact.name);
-                    formData.append('email', this.contact.email);
-                    formData.append('password', this.contact.password);
-                    formData.append('password_confirmation', this.contact.password_confirmation);
-                    let url = 'http://127.0.0.1:3000/api/register';
+                    formData.append('name', this.user.name);
+                    formData.append('email', this.user.email);
+                    formData.append('password', this.user.password);
+                    formData.append('password_confirmation', this.user.password_confirmation);
+                    let url = 'http://127.0.0.1:8000/api/register';
                     await axios.post(url, formData).then((response) => {
                         console.log(response);
                         if (response.status == 200) {
-                            this.contact.name = '';
-                            this.contact.email = '';
-                            this.contact.password = '';
-                            this.contact.password_confirmation = '';
+                            this.user.name = '';
+                            this.user.email = '';
+                            this.user.password = '';
+                            this.user.password_confirmation = '';
                         
                             //  router.push('/login');
                         } else {

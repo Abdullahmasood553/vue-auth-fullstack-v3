@@ -6,16 +6,16 @@
                     <fieldset>
                         <div class="form-group">
                             <label class="form-label mt-4">Enter Email</label>
-                            <input type="email" class="form-control" placeholder="Enter email">
+                            <input type="email" class="form-control" v-model="user.email" placeholder="Enter email">
                         </div>
 
                         <div class="form-group">
                             <label class="form-label mt-4">Enter Password</label>
-                            <input type="password" class="form-control"
+                            <input type="password" v-model="user.password"  class="form-control"
                                 placeholder="Enter Password">
                         </div>
 
-                        <button class="btn btn-primary mt-4">Submit</button>
+                        <button class="btn btn-primary mt-4" @click.prevent="login">Submit</button>
                     </fieldset>
                 </form>
             </div>
@@ -24,7 +24,27 @@
 </template>
 
 <script>
+    import axios from 'axios'
     export default {
-        name: 'Login'
+        name: 'Login',
+        data() {
+            return {
+                user: {},
+                email: '',
+                password: ''
+            }
+        },
+        methods: {
+            login() {
+                alert('Clicked');
+                axios.post('http://127.0.0.1:8000/api/login').then(response => {
+                      if (response.status == 200) { 
+                          alert('Success');
+                      }
+                }).catch(error => {
+                    console.log(error);
+                });
+            }
+        }
     }
 </script>
