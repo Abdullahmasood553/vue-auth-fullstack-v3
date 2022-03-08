@@ -62,12 +62,12 @@ import axios from 'axios'
                     let url = 'http://127.0.0.1:8000/api/register';
                     await axios.post(url, formData).then((response) => {
                         console.log(response);
-                        if (response.status == 200) {
+                        if (response.data.status == 200) {
                             this.user.name = '';
                             this.user.email = '';
                             this.user.password = '';
                             this.user.password_confirmation = '';
-                        
+                            alert(response.data.message);
                             //  router.push('/login');
                         } else {
                             console.log('Error');
