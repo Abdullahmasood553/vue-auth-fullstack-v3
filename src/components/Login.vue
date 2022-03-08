@@ -11,7 +11,7 @@
 
                         <div class="form-group">
                             <label class="form-label mt-4">Enter Password</label>
-                            <input type="password" v-model="user.password"  class="form-control"
+                            <input type="password" v-model="user.password" class="form-control"
                                 placeholder="Enter Password">
                         </div>
 
@@ -36,19 +36,24 @@
             }
         },
         methods: {
-            login() {
-                alert('Clicked');
-                axios.post('http://127.0.0.1:8000/api/login').then(response => {
-                      if (response.status == 200) { 
-                        localStorage.setItem('usertoken', response.data.token)
-                        this.email = ''
-                        this.password = ''
-                        router.push({name: 'Home'})
-                            }
-                        }).catch(error => {
-                            console.log(error);
-                        });
-            }
+            async login() {
+                    alert('Clicked');
+                    let formData = new FormData();
+                    formData.append('email', this.user.email);
+                    formData.append('password', this.user.password);
+                    let url = 'http://127.0.0.1:8000/api/login';
+                    await axios.post(url, formData).then(response => {
+                    console.log(response);
+                    if (response.data.status == 200) { 
+                    localStorage.setItem('usertoken', response.data.token);
+                    router.push({name:'Home'})
+                    this.email = ''
+                    this.password = ''
+                }
+            }).catch(error => {
+                console.log(error);
+            });
         }
     }
+}
 </script>

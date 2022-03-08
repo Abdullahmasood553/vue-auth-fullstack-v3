@@ -37,7 +37,7 @@
 
 <script>
 import axios from 'axios'
-// import router from '../routes'
+ import router from '../routes'
     export default {
         name: 'Register',
         data() {
@@ -68,7 +68,7 @@ import axios from 'axios'
                             this.user.password = '';
                             this.user.password_confirmation = '';
                             alert(response.data.message);
-                            //  router.push('/login');
+                            router.push('/');
                         } else {
                             console.log('Error');
                             alert('Error');

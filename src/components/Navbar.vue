@@ -16,15 +16,14 @@
         <li class="nav-item">
           <router-link class="nav-link" to="/register">Register</router-link>
         </li>
-        <!-- <li class="nav-item dropdown">
+        <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Dropdown
+              Name
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <li><a class="dropdown-item"  href="javascript:void(0)" @click="logout">Logout</a></li>
           </ul>
-        </li> -->
+        </li>
       </ul>
 
     </div>
@@ -34,10 +33,36 @@
 
 
 <script>
+   import axios from 'axios'
+  import router from '../routes'
 export default {
     name: 'Header',
+    data() {
+      return {
+        
+      }
+    },
     props: {
         title: String
+    },
+    methods: {
+      async logout() {  
+          alert('Clicked');
+          let url = 'http://127.0.0.1:8000/api/logout';
+          await axios.post(url).then((response) => {
+            if(response.status) {
+               localStorage.removeItem('usertoken')
+            } else {
+              console.log('error');
+            }
+          console.log(response);
+        
+          router.push("/login");
+        }).catch(error => {
+          
+          console.log(error);
+        });
+      }
     }
 }
 </script>
