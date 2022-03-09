@@ -11,7 +11,7 @@
           <a class="nav-link active" aria-current="page" href="#">Home</a>
         </li> -->
         <li class="nav-item">
-          <router-link class="nav-link" to="/">Login</router-link>
+          <router-link class="nav-link" to="/login">Login</router-link>
         </li>
         <li class="nav-item">
           <router-link class="nav-link" to="/register">Register</router-link>
@@ -37,29 +37,32 @@
   import router from '../routes'
 export default {
     name: 'Header',
-    data() {
-      return {
-        
-      }
-    },
     props: {
         title: String
     },
     methods: {
       async logout() {  
-          alert('Clicked');
+          const token =  localStorage.getItem('usertoken');
+                const config = {
+              headers: { 
+                Authorization: `Bearer ${token}`, Accept: 'application/json', 'Content-Type': 'application/json' 
+                }
+          };
+
+         const bodyParameters = {
+          key: "value"
+        };
+
           let url = 'http://127.0.0.1:8000/api/logout';
-          await axios.post(url).then((response) => {
+          await axios.post(url, bodyParameters, config).then((response) => {
+              console.log(response);
             if(response.status) {
-               localStorage.removeItem('usertoken')
-            } else {
+               localStorage.removeItem('usertoken');
+            } else if(response.message == 401) {
               console.log('error');
             }
-          console.log(response);
-        
           router.push("/login");
         }).catch(error => {
-          
           console.log(error);
         });
       }

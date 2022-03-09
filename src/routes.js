@@ -8,12 +8,12 @@ import Register from './components/Register'
 const routes = [
     {
         name: 'Login',
-        path: '/',
+        path: '/login',
         component: Login
     },
     {
         name: 'Home',
-        path: '/home',
+        path: '/',
         component: Home
     },
     {

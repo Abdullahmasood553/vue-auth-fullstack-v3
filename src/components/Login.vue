@@ -37,7 +37,6 @@
         },
         methods: {
             async login() {
-                    alert('Clicked');
                     let formData = new FormData();
                     formData.append('email', this.user.email);
                     formData.append('password', this.user.password);

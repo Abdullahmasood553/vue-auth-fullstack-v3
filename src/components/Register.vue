@@ -68,7 +68,7 @@ import axios from 'axios'
                             this.user.password = '';
                             this.user.password_confirmation = '';
                             alert(response.data.message);
-                            router.push('/');
+                            router.push('/login');
                         } else {
                             console.log('Error');
                             alert('Error');
