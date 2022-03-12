@@ -16,14 +16,23 @@
         <li class="nav-item">
           <router-link class="nav-link" to="/register">Register</router-link>
         </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Name
+        
+        <span v-if="isLoggedIn">
+            <li class="nav-item">
+                <router-link class="dropdown-item" to="javascript:void(0)" @click="logout">Logout</router-link>
+            </li>
+        </span>
+         <span v-else>
+              <router-link class="nav-link" to="/login">Login</router-link>
+          </span>
+        <!-- <li class="nav-item dropdown">
+          <a v-if="isLoggedIn" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Abdullah
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item"  href="javascript:void(0)" @click="logout">Logout</a></li>
+             <li ><router-link class="dropdown-item" href="javascript:void(0)" @click="logout">Logout</router-link></li>
           </ul>
-        </li>
+        </li> -->
       </ul>
 
     </div>
@@ -65,6 +74,11 @@ export default {
         }).catch(error => {
           console.log(error);
         });
+      }
+    },
+    computed: {
+        isLoggedIn() {
+        return !!window.localStorage.getItem('usertoken');
       }
     }
 }

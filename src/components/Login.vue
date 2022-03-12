@@ -26,6 +26,7 @@
 <script>
     import axios from 'axios'
     import router from '../routes'
+  
     export default {
         name: 'Login',
         data() {
@@ -44,6 +45,7 @@
                     await axios.post(url, formData).then(response => {
                     console.log(response);
                     if (response.data.status == 200) { 
+                        // this.$toasted.show('hello billo')
                     localStorage.setItem('usertoken', response.data.token);
                     router.push({name:'Home'})
                     this.email = ''

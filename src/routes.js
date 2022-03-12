@@ -9,12 +9,13 @@ const routes = [
     {
         name: 'Login',
         path: '/login',
-        component: Login
+        component: Login,
+        meta: { guestOnly: true }
     },
     {
         name: 'Home',
         path: '/',
-        component: Home
+        component: Home,
     },
     {
         name: 'Register',   
