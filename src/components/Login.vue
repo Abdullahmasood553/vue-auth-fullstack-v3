@@ -13,13 +13,13 @@
                                     <div class="form-group">
                                         <label class="form-label mt-4">Enter Email</label>
                                         <input type="email" class="form-control" v-model="user.email"
-                                            placeholder="Enter email">
+                                            placeholder="Enter email" autocomplete="off">
                                     </div>
 
                                     <div class="form-group">
                                         <label class="form-label mt-4">Enter Password</label>
                                         <input type="password" v-model="user.password" class="form-control"
-                                            placeholder="Enter Password">
+                                            placeholder="Enter Password" autocomplete="off">
                                     </div>
 
                                     <div class="form-group">
@@ -37,7 +37,8 @@
 <script>
     import axios from 'axios'
     import router from '../routes'
-
+    // import { createApp } from 'vue'
+    // import App from '../App.vue'
     export default {
         name: 'Login',
         data() {
@@ -56,8 +57,13 @@
                 await axios.post(url, formData).then(response => {
                     console.log(response);
                     if (response.data.status == 200) {
-                        localStorage.setItem('usertoken', response.data.token);
-                        //  console.log(localStorage.getItem('user', response.data.name));
+                    localStorage.setItem('usertoken', response.data.token);
+                    let user = response.data;
+                    this.$store.commit('SET_USER', user);
+                    this.$store.commit('SET_AUTHENTICATED', true);
+                    localStorage.setItem("auth", true);
+                    // const app = createApp(App);
+                    // app.$toast.success('Profile saved.', {})
                         router.push({
                             name: 'Home'
                         })

@@ -1,21 +1,15 @@
-// import Vue from 'vue'
-// import Vuex from 'vuex'
+
 import { createApp } from 'vue'
 import { createStore } from 'vuex'
+import App from './App.vue'
 import router from './routes'
 import axios from 'axios'
-import App from './App.vue'
 
 const app = createApp(App)
 app.use(store)
 
 
 const store = createStore({
-    state: {
-        message: 'Welcome, Beautiful People!',
-        user: {},
-        authenticated: false,
-    },
     getters: {
         getMessage(state) {
             return state.message
@@ -29,7 +23,7 @@ const store = createStore({
     },
     mutations: {
         SET_USER(state, data){
-            state.user = data;
+            state.user = data
         },
         SET_AUTHENTICATED(state, data){
             state.authenticated = data
@@ -37,22 +31,23 @@ const store = createStore({
     },
     actions: {
         authUser ({ commit }) {
-            return axios.get('/api/user').then((response) => {
+            let url = 'http://127.0.0.1:8000/api/login';
+            return axios.post(url).then((response) => {
                 commit('SET_AUTHENTICATED', true)
                 commit('SET_USER', response.data)
                 localStorage.setItem("auth", true)
                 
                 if(router.currentRoute.name !== null){
-                    router.push({ name: 'dashboard' })
+                    router.push({ name: 'Home' })
                 }
 
             }).catch(() => {
                 commit('SET_AUTHENTICATED', false)
                 commit('SET_USER', null)
-                localStorage.removeItem("auth")
+                localStorage.removeItem("auth");
 
                 if(router.currentRoute.name !== 'login'){
-                    router.push({ name: 'login' })
+                    router.push({ name: 'Login' })
                 }
             })
         },

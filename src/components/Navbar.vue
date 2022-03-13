@@ -6,33 +6,34 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0" v-if="auth">
+        <li class="nav-item">
+          <router-link class="nav-link active" aria-current="page" to="/">Home</router-link>
+        </li>
+       
         <!-- <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
+           <a class="nav-link" href="javascript:void(0)" @click.prevent="logout">Logout</a>
         </li> -->
+
+                
+         <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+             <li><a class="dropdown-item" @click.prevent="logout">Logout</a></li>
+          </ul>
+        </li> 
+      </ul>
+
+
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0" v-else>
         <li class="nav-item">
           <router-link class="nav-link" to="/login">Login</router-link>
         </li>
         <li class="nav-item">
           <router-link class="nav-link" to="/register">Register</router-link>
         </li>
-        
-        <span v-if="isLoggedIn">
-            <li class="nav-item">
-                <router-link class="dropdown-item" to="javascript:void(0)" @click="logout">Logout</router-link>
-            </li>
-        </span>
-         <span v-else>
-              <router-link class="nav-link" to="/login">Login</router-link>
-          </span>
-        <!-- <li class="nav-item dropdown">
-          <a v-if="isLoggedIn" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Abdullah
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-             <li ><router-link class="dropdown-item" href="javascript:void(0)" @click="logout">Logout</router-link></li>
-          </ul>
-        </li> -->
       </ul>
 
     </div>
@@ -44,6 +45,7 @@
 <script>
    import axios from 'axios'
   import router from '../routes'
+
 export default {
     name: 'Header',
     props: {
@@ -66,7 +68,12 @@ export default {
           await axios.post(url, bodyParameters, config).then((response) => {
               console.log(response);
             if(response.status) {
-               localStorage.removeItem('usertoken');
+              //  localStorage.removeItem('usertoken');
+                // localStorage.removeItem("auth");
+                localStorage.removeItem("auth");
+                this.$store.commit('SET_AUTHENTICATED', false);
+                this.$router.push({ name: 'Login' });
+
             } else if(response.message == 401) {
               console.log('error');
             }
@@ -74,12 +81,16 @@ export default {
         }).catch(error => {
           console.log(error);
         });
-      }
+      },
     },
-    computed: {
-        isLoggedIn() {
-        return !!window.localStorage.getItem('usertoken');
-      }
+    // computed: {
+    //     isLoggedIn() {
+    //     return !!window.localStorage.getItem('usertoken');
+    //   }
+      computed: {
+            auth(){
+            return this.$store.getters.getAuthenticated;
+        }
     }
 }
 </script>

@@ -4,23 +4,30 @@ import Home from './components/Home'
 import Login from './components/Login'
 import Register from './components/Register'
 
-
 const routes = [
     {
         name: 'Login',
         path: '/login',
         component: Login,
-        meta: { guestOnly: true }
+        meta: {
+            requiresVisitor: true,
+        }
     },
     {
         name: 'Home',
         path: '/',
         component: Home,
+        meta: {
+            requiresAuth: true,
+        }
     },
     {
         name: 'Register',   
         path: '/register',
-        component: Register
+        component: Register,
+        meta: {
+            requiresVisitor: true,
+        }
     }
 ];
 
