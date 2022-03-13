@@ -56,8 +56,6 @@
                 await axios.post(url, formData).then(response => {
                     console.log(response);
                     if (response.data.status == 200) {
-                        // this.$toasted.show('hello billo')
-                        this.$store.commit("setAuthentication", true);
                         localStorage.setItem('usertoken', response.data.token);
                         //  console.log(localStorage.getItem('user', response.data.name));
                         router.push({
