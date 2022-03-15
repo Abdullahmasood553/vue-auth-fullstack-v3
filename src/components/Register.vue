@@ -57,7 +57,7 @@
 <script>
     import axios from 'axios'
     import router from '../routes'
-      import Swal from 'sweetalert2'
+    import Swal from 'sweetalert2'
     export default {
         name: 'Register',
         data() {
@@ -76,21 +76,21 @@
         methods: {
             async saveContact() {
                 this.errors = [];
-                
-                if (!this.name) {
+
+                if (!this.user.name) {
                     this.errors.push('Name is required');
                 }
-                if (!this.email) {
+                if (!this.user.email) {
                     this.errors.push('Email is required');
                 }
-                if (!this.password) {
+                if (!this.user.password) {
                     this.errors.push('Password is required');
                 }
-                if (!this.password_confirmation) {
+                if (!this.user.password_confirmation) {
                     this.errors.push('Confirm Password is required');
                 }
-                if (this.password !== this.password_confirmation) {
-                    this.errors.push('Password do not match');
+                if (this.user.password !== this.user.password_confirmation) {
+                    this.errors.push('Password does not match');
                 }
 
                 if (!this.errors.length) {
@@ -103,11 +103,11 @@
                     await axios.post(url, formData).then((response) => {
                         console.log(response);
                         if (response.data.status == 200) {
-                              Swal.fire({
-                            icon: 'success',
-                            title: 'Success...',
-                            text: response.data.message,
-                        })
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success...',
+                                text: response.data.message,
+                            })
                             this.user.name = '';
                             this.user.email = '';
                             this.user.password = '';
@@ -116,17 +116,20 @@
                             router.push('/login');
                         } else {
                             console.log('Error');
-                              Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: response.data.message,
-                        })
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: response.data.message,
+                            })
                         }
                     }).catch(error => {
                         this.errors.push(error.response);
                     });
                 }
             }
+        },
+        mounted: function () {
+            console.log('Register Form Component Loaded...');
         }
     }
 </script>

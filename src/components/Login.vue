@@ -59,41 +59,49 @@
         methods: {
             async login() {
 
-                alert(1);
+                this.errors = [];
 
-                let formData = new FormData();
-                formData.append('email', this.user.email);
-                formData.append('password', this.user.password);
-                let url = 'http://127.0.0.1:8000/api/login';
-                await axios.post(url, formData).then(response => {
-                    if (response.data.status == 200) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Success...',
-                            text: response.data.message,
-                        })
-                        localStorage.setItem('usertoken', response.data.token);
-                        let user = response.data;
-                        this.$store.commit('SET_USER', user);
-                        this.$store.commit('SET_AUTHENTICATED', true);
-                        localStorage.setItem("auth", true);
+                if (!this.user.email) {
+                    this.errors.push('Email is required');
+                }
+                if (!this.user.password) {
+                    this.errors.push('Password is required');
+                }
 
-                        router.push({
-                            name: 'Home'
-                        })
-                        this.email = ''
-                        this.password = ''
-                    } else if (response.data.status == 401) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: response.data.message,
-                        })
-                    }
-                }).catch(error => {
-                    this.errors.push(error.response);
-                });
+                if (!this.errors.length) {
+                    let formData = new FormData();
+                    formData.append('email', this.user.email);
+                    formData.append('password', this.user.password);
+                    let url = 'http://127.0.0.1:8000/api/login';
+                    await axios.post(url, formData).then(response => {
+                        if (response.data.status == 200) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success...',
+                                text: response.data.message,
+                            })
+                            localStorage.setItem('usertoken', response.data.token);
+                            let user = response.data;
+                            this.$store.commit('SET_USER', user);
+                            this.$store.commit('SET_AUTHENTICATED', true);
+                            localStorage.setItem("auth", true);
 
+                            router.push({
+                                name: 'Home'
+                            })
+                            this.email = ''
+                            this.password = ''
+                        } else if (response.data.status == 401) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: response.data.message,
+                            })
+                        }
+                    }).catch(error => {
+                        this.errors.push(error.response);
+                    });
+                }
             }
         },
         mounted: function () {
