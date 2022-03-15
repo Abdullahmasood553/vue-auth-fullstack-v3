@@ -5,7 +5,7 @@
                 <div class="col-6 offset-3">
                     <div class="card card-default">
                         <div class="card-header">
-                            Login
+                            Register
                         </div>
                         <div class="card-body">
                             <form @submit.prevent="saveContact">
@@ -57,6 +57,7 @@
 <script>
     import axios from 'axios'
     import router from '../routes'
+      import Swal from 'sweetalert2'
     export default {
         name: 'Register',
         data() {
@@ -102,6 +103,11 @@
                     await axios.post(url, formData).then((response) => {
                         console.log(response);
                         if (response.data.status == 200) {
+                              Swal.fire({
+                            icon: 'success',
+                            title: 'Success...',
+                            text: response.data.message,
+                        })
                             this.user.name = '';
                             this.user.email = '';
                             this.user.password = '';
@@ -110,7 +116,11 @@
                             router.push('/login');
                         } else {
                             console.log('Error');
-                            alert('Error');
+                              Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: response.data.message,
+                        })
                         }
                     }).catch(error => {
                         this.errors.push(error.response);

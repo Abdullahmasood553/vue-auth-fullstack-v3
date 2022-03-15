@@ -53,50 +53,50 @@
                 user: {},
                 email: '',
                 password: '',
-                      errors: []
+                errors: []
             }
         },
         methods: {
             async login() {
-            
-                    alert(1);
 
-                    let formData = new FormData();
-                    formData.append('email', this.user.email);
-                    formData.append('password', this.user.password);
-                    let url = 'http://127.0.0.1:8000/api/login';
-                    await axios.post(url, formData).then(response => {
-                        if (response.data.status == 200) {
-                             Swal.fire({
-                                icon: 'success',
-                                title: 'Success...',
-                                text: response.data.message,
-                            })
-                            localStorage.setItem('usertoken', response.data.token);
-                            let user = response.data;
-                            this.$store.commit('SET_USER', user);
-                            this.$store.commit('SET_AUTHENTICATED', true);
-                            localStorage.setItem("auth", true);
+                alert(1);
 
-                            router.push({
-                                name: 'Home'
-                            })
-                            this.email = ''
-                            this.password = ''
-                        } else if (response.data.status == 401) {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Oops...',
-                                text: response.data.message,
-                            })
-                        }
-                    }).catch(error => {
-                        this.errors.push(error.response);
-                    });
-                
+                let formData = new FormData();
+                formData.append('email', this.user.email);
+                formData.append('password', this.user.password);
+                let url = 'http://127.0.0.1:8000/api/login';
+                await axios.post(url, formData).then(response => {
+                    if (response.data.status == 200) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success...',
+                            text: response.data.message,
+                        })
+                        localStorage.setItem('usertoken', response.data.token);
+                        let user = response.data;
+                        this.$store.commit('SET_USER', user);
+                        this.$store.commit('SET_AUTHENTICATED', true);
+                        localStorage.setItem("auth", true);
+
+                        router.push({
+                            name: 'Home'
+                        })
+                        this.email = ''
+                        this.password = ''
+                    } else if (response.data.status == 401) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: response.data.message,
+                        })
+                    }
+                }).catch(error => {
+                    this.errors.push(error.response);
+                });
+
             }
         },
-         mounted: function () {
+        mounted: function () {
             console.log('Login Form Component Loaded...');
         }
     }
