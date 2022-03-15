@@ -9,6 +9,13 @@
                         </div>
                         <div class="card-body">
                             <form>
+                                <div class="alert alert-danger" v-if="errors.length">
+                                    <ul class="mb-0">
+                                        <li v-for="(error, index) in errors" :key="index">
+                                            {{ error }}
+                                        </li>
+                                    </ul>
+                                </div>
 
                                 <div class="form-group">
                                     <label class="form-label mt-4">Enter Email</label>
@@ -37,8 +44,6 @@
 <script>
     import axios from 'axios'
     import router from '../routes'
-    // import { createApp } from 'vue'
-    // import App from '../App.vue'
     import Swal from 'sweetalert2';
 
     export default {
@@ -47,46 +52,52 @@
             return {
                 user: {},
                 email: '',
-                password: ''
+                password: '',
+                      errors: []
             }
         },
         methods: {
             async login() {
-                let formData = new FormData();
-                formData.append('email', this.user.email);
-                formData.append('password', this.user.password);
-                let url = 'http://127.0.0.1:8000/api/login';
-                await axios.post(url, formData).then(response => {
+            
+                    alert(1);
 
+                    let formData = new FormData();
+                    formData.append('email', this.user.email);
+                    formData.append('password', this.user.password);
+                    let url = 'http://127.0.0.1:8000/api/login';
+                    await axios.post(url, formData).then(response => {
+                        if (response.data.status == 200) {
+                             Swal.fire({
+                                icon: 'success',
+                                title: 'Success...',
+                                text: response.data.message,
+                            })
+                            localStorage.setItem('usertoken', response.data.token);
+                            let user = response.data;
+                            this.$store.commit('SET_USER', user);
+                            this.$store.commit('SET_AUTHENTICATED', true);
+                            localStorage.setItem("auth", true);
 
-                    if (response.data.status == 200) {
-                        Swal.fire(
-                            'Success',
-                            'Congrats',
-                            'success'
-                        );
-                        localStorage.setItem('usertoken', response.data.token);
-                        let user = response.data;
-                        this.$store.commit('SET_USER', user);
-                        this.$store.commit('SET_AUTHENTICATED', true);
-                        localStorage.setItem("auth", true);
-
-                        router.push({
-                            name: 'Home'
-                        })
-                        this.email = ''
-                        this.password = ''
-                    } else if (response.data.status == 401) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: response.data.message,
-                        })
-                    }
-                }).catch(error => {
-                    console.log(error);
-                });
+                            router.push({
+                                name: 'Home'
+                            })
+                            this.email = ''
+                            this.password = ''
+                        } else if (response.data.status == 401) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: response.data.message,
+                            })
+                        }
+                    }).catch(error => {
+                        this.errors.push(error.response);
+                    });
+                
             }
+        },
+         mounted: function () {
+            console.log('Login Form Component Loaded...');
         }
     }
 </script>
